@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leveling Meter with Carryover</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive Leveling Meter</h1>
+        <div class="level-display">
+            Level: <span id="level">1</span>
+        </div>
+        <div class="meter-container">
+            <div id="meter" class="meter"></div>
+        </div>
+        <div class="button-container" id="button-container">
+            <button class="action-button" data-weight="10">+10 points</button>
+            <button class="action-button" data-weight="20">+20 points</button>
+            <button class="action-button" data-weight="50">+50 points</button>
+        </div>
+        <div class="new-button-form">
+            <h2>Add New Button</h2>
+            <input type="text" id="button-label" placeholder="Button Label" />
+            <input type="number" id="button-weight" placeholder="Points" />
+            <button id="add-button">Add Button</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
