@@ -14,10 +14,8 @@ const addButton = document.getElementById('add-button');
 
 // Load state from localStorage
 function loadState() {
-    console.log("Loading state from localStorage...");
     const savedState = JSON.parse(localStorage.getItem('meterState'));
     if (savedState) {
-        console.log("Saved state found:", savedState);
         currentPoints = savedState.currentPoints || 0;
         level = savedState.level || 1;
         depletionRate = savedState.depletionRate || depletionRate;
@@ -25,13 +23,10 @@ function loadState() {
 
         // Calculate elapsed time and reduce points accordingly
         const elapsedSeconds = Math.floor((Date.now() - lastUpdated) / 1000);
-        console.log("Elapsed seconds since last update:", elapsedSeconds);
         currentPoints = Math.max(0, currentPoints - elapsedSeconds * depletionRate);
         while (currentPoints >= maxPoints) {
             handleLevelUp();
         }
-    } else {
-        console.log("No saved state found. Starting fresh.");
     }
 }
 
@@ -43,7 +38,6 @@ function saveState() {
         depletionRate,
         lastUpdated: Date.now(),
     };
-    console.log("Saving state to localStorage:", state);
     localStorage.setItem('meterState', JSON.stringify(state));
 }
 
@@ -65,7 +59,6 @@ function handleLevelUp() {
     currentPoints = excessPoints; // Carry over excess points to the next level
     depletionRate *= 1.1; // Increase depletion rate by 10%
     levelDisplay.textContent = level;
-    console.log(`Level up! Now at Level ${level}`);
     alert(`Congratulations! You've leveled up to Level ${level}!`);
     updateMeter();
 }
@@ -90,7 +83,6 @@ function addPoints(points) {
 buttonContainer.addEventListener('click', (event) => {
     if (event.target.classList.contains('action-button')) {
         const weight = parseInt(event.target.dataset.weight, 10);
-        console.log(`Button clicked: Adding ${weight} points`);
         addPoints(weight);
     }
 });
@@ -107,8 +99,6 @@ addButton.addEventListener('click', () => {
         newButton.setAttribute('data-weight', weight);
 
         buttonContainer.appendChild(newButton);
-
-        console.log(`New button added: ${label} (+${weight} points)`);
 
         // Clear inputs
         buttonLabelInput.value = '';
