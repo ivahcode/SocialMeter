@@ -4,12 +4,41 @@ let level = 1;
 let depletionRate = maxPoints / (24 * 60 * 60); // Points per second for 1 day
 let interval;
 
+// HTML elements
 const meter = document.getElementById('meter');
 const levelDisplay = document.getElementById('level');
 const buttonContainer = document.getElementById('button-container');
 const buttonLabelInput = document.getElementById('button-label');
 const buttonWeightInput = document.getElementById('button-weight');
 const addButton = document.getElementById('add-button');
+
+// Load state from localStorage
+function loadState() {
+    const savedState = JSON.parse(localStorage.getItem('meterState'));
+    if (savedState) {
+        currentPoints = savedState.currentPoints || 0;
+        level = savedState.level || 1;
+        depletionRate = savedState.depletionRate || depletionRate;
+        const lastUpdated = savedState.lastUpdated || Date.now();
+
+        // Calculate elapsed time and reduce points accordingly
+        const elapsedSeconds = Math.floor((Date.now() - lastUpdated) / 1000);
+        currentPoints = Math.max(0, currentPoints - elapsedSeconds * depletionRate);
+        while (currentPoints >= maxPoints) {
+            handleLevelUp();
+        }
+    }
+}
+
+// Save state to localStorage
+function saveState() {
+    localStorage.setItem('meterState', JSON.stringify({
+        currentPoints,
+        level,
+        depletionRate,
+        lastUpdated: Date.now(),
+    }));
+}
 
 // Update the meter display
 function updateMeter() {
@@ -19,6 +48,7 @@ function updateMeter() {
     if (currentPoints >= maxPoints) {
         handleLevelUp();
     }
+    saveState();
 }
 
 // Handle leveling up
@@ -77,5 +107,7 @@ addButton.addEventListener('click', () => {
     }
 });
 
-// Start the depletion process on page load
+// Initialize application
+loadState();
+updateMeter();
 startDepletion();
